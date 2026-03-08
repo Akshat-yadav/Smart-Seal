@@ -7,10 +7,15 @@ const embedQrIntoPdf = async (pdfBuffer, qrPngBuffer) => {
   const qrImage = await pdfDoc.embedPng(qrPngBuffer);
   const firstPage = pdfDoc.getPages()[0];
 
-  const qrSize = 110;
-  const margin = 24;
-  const x = firstPage.getWidth() - qrSize - margin;
-  const y = margin;
+  const pageWidth = firstPage.getWidth();
+  const pageHeight = firstPage.getHeight();
+
+  const qrSize = pageWidth * 0.10;
+  const rightMargin = pageWidth * 0.02;
+  const topMargin = pageHeight * 0.02;
+
+  const x = Math.max(0, pageWidth - qrSize - rightMargin);
+  const y = Math.max(0, pageHeight - qrSize - topMargin);
 
   firstPage.drawImage(qrImage, {
     x,
